@@ -76,7 +76,7 @@ const Layout = () => {
           </ul>
         </nav>
       </aside>
-      <main className='bg-[#F7F7F7] w-[calc(100%-256px)] h-screen py-4 px-6'>
+      <main className='bg-[#F7F7F7] w-[calc(100%-256px)] h-screen overflow-y-auto py-4 px-6'>
         <Outlet />
       </main>
     </div>

@@ -132,3 +132,28 @@
     border: '2pc solid red';
   }
 }
+
+/* Add this to your global CSS */
+@page {
+  size: A4;
+  margin: 10mm;
+}
+
+@media print {
+  body {
+    width: 210mm !important;
+    min-height: 297mm !important;
+  }
+
+  .print-container {
+    width: 190mm !important;
+    min-height: 277mm !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    transform: scale(1) !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}

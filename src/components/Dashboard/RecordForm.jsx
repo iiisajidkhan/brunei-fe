@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import * as yup from 'yup'; // Import Yup for validation
 
 // Shadcn Component
 import { Button } from '@/components/ui/button';
@@ -10,7 +11,7 @@ import { PrinterCheckIcon, Save, X } from 'lucide-react';
 
 function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpose }) {
   const [formData, setFormData] = useState({
-    // registerNumber: '',
+    // Initialize all fields with proper defaults
     name: '',
     phoneNumber: '',
     address: '',
@@ -36,6 +37,38 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
     Kaf: '',
   });
 
+  const [errors, setErrors] = useState({});
+
+  const validationSchema = yup.object().shape({
+    name: yup.string().required('Name is required'),
+    phoneNumber: yup
+      .string()
+      .matches(/^[0-9]+$/, 'Phone number must be numeric')
+      .required('Phone number is required'),
+    address: yup.string().required('Address is required'),
+    length: yup.number().typeError('Length must be a number').required(),
+    arm: yup.number().typeError('Arm must be a number').required(),
+    shoulder: yup.number().typeError('Shoulder must be a number').required(),
+    neck: yup.number().typeError('Neck must be a number').required(),
+    chest: yup.number().typeError('Chest must be a number').required(),
+    width: yup.number().typeError('Width must be a number').required(),
+    pant: yup.number().typeError('Pant must be a number').required(),
+    pancha: yup.number().typeError('Pancha must be a number').required(),
+    Kaf: yup.number().typeError('Kaf must be a number').required('Kaf is required'),
+    collarType: yup.string().required(),
+    patiType: yup.string().required(),
+    patiWidth: yup.string().required(),
+    pocket: yup.boolean(),
+    // Make pocketType independent of pocket checkbox
+    pocketType: yup.string().required('Pocket type is required'),
+    chotaPlate: yup.boolean(),
+    GotyKeyBaghair: yup.boolean(),
+    sehdaGhera: yup.boolean(),
+    golAsteen: yup.boolean(),
+    rangeenButton: yup.boolean(),
+    kafType: yup.string().required('Kaf type is required'),
+  });
+
   useEffect(() => {
     document.body.classList.add('overflow-hidden');
     return () => {
@@ -59,6 +92,10 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
       ...prevData,
       [id]: value,
     }));
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      [id]: '', // Clear error for the field being edited
+    }));
   };
 
   const handleRadioChange = (name, value) => {
@@ -66,17 +103,40 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
       ...prevData,
       [name]: value,
     }));
-  };
-
-  const handleCheckboxChange = (id, checked) => {
-    setFormData(prevData => ({
-      ...prevData,
-      [id]: checked,
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      [name]: '', // Clear error for the field being edited
     }));
   };
 
-  const handleSubmitForm = () => {
-    onSubmit(formData);
+  // Handle checkbox change to toggle boolean
+  const handleCheckboxChange = (id, checked) => {
+    setFormData(prev => ({
+      ...prev,
+      [id]: checked,
+      // Remove the dependency between pocket and pocketType
+    }));
+  };
+
+  // Submit handler ensures validation before submission
+  const handleSubmitForm = async () => {
+    try {
+      await validationSchema.validate(formData, { abortEarly: false });
+      setErrors({});
+      onSubmit(formData); // Submit all data including defaults
+    } catch (err) {
+      const newErrors = {};
+      if (err.inner && Array.isArray(err.inner)) {
+        err.inner.forEach(e => {
+          newErrors[e.path] = e.message;
+        });
+      } else {
+        // Handle unexpected error structure
+        console.error('Validation error:', err);
+        newErrors.general = 'Form validation failed. Please check your entries.';
+      }
+      setErrors(newErrors);
+    }
   };
 
   const handlePrintForm = () => {
@@ -116,6 +176,7 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
               value={formData.name}
               onChange={handleChange}
             />
+            {errors.name && <p className='text-red-500 text-sm'>{errors.name}</p>}
           </div>
           <div className='flex flex-col gap-2'>
             <Label htmlFor='phoneNumber'>Phone /موبائل نمبر</Label>
@@ -126,6 +187,7 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
               value={formData.phoneNumber}
               onChange={handleChange}
             />
+            {errors.phoneNumber && <p className='text-red-500 text-sm'>{errors.phoneNumber}</p>}
           </div>
           <div className='flex flex-col gap-2'>
             <Label htmlFor='address'>Address / پتہ </Label>
@@ -136,6 +198,7 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
               value={formData.address}
               onChange={handleChange}
             />
+            {errors.address && <p className='text-red-500 text-sm'>{errors.address}</p>}
           </div>
         </div>
 
@@ -149,10 +212,12 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
               value={formData.length}
               onChange={handleChange}
             />
+            {errors.length && <p className='text-red-500 text-sm'>{errors.length}</p>}
           </div>
           <div className='flex flex-col gap-2'>
             <Label htmlFor='arm'>Arm / بازو</Label>
             <Input id='arm' placeholder='Enter Arm' className='rounded' value={formData.arm} onChange={handleChange} />
+            {errors.arm && <p className='text-red-500 text-sm'>{errors.arm}</p>}
           </div>
           <div className='flex flex-col gap-2'>
             <Label htmlFor='shoulder'>Shoulder / تیرہ </Label>
@@ -163,6 +228,7 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
               value={formData.shoulder}
               onChange={handleChange}
             />
+            {errors.shoulder && <p className='text-red-500 text-sm'>{errors.shoulder}</p>}
           </div>
           <div className='flex flex-col gap-2'>
             <Label htmlFor='neck'>Neck / گلہ</Label>
@@ -173,6 +239,7 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
               value={formData.neck}
               onChange={handleChange}
             />
+            {errors.neck && <p className='text-red-500 text-sm'>{errors.neck}</p>}
           </div>
           <div className='flex flex-col gap-2'>
             <Label htmlFor='chest'>Chest / چھا تی </Label>
@@ -183,6 +250,7 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
               value={formData.chest}
               onChange={handleChange}
             />
+            {errors.chest && <p className='text-red-500 text-sm'>{errors.chest}</p>}
           </div>
           <div className='flex flex-col gap-2'>
             <Label htmlFor='width'>Width / گیرہ / چوڑائی</Label>
@@ -193,6 +261,7 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
               value={formData.width}
               onChange={handleChange}
             />
+            {errors.width && <p className='text-red-500 text-sm'>{errors.width}</p>}
           </div>
           <div className='flex flex-col gap-2'>
             <Label htmlFor='pant'>Pant / شلوار</Label>
@@ -203,6 +272,7 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
               value={formData.pant}
               onChange={handleChange}
             />
+            {errors.pant && <p className='text-red-500 text-sm'>{errors.pant}</p>}
           </div>
           <div className='flex flex-col gap-2'>
             <Label htmlFor='pancha'>Pancha / پانچہ</Label>
@@ -213,6 +283,7 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
               value={formData.pancha}
               onChange={handleChange}
             />
+            {errors.pancha && <p className='text-red-500 text-sm'>{errors.pancha}</p>}
           </div>
         </div>
 
@@ -240,6 +311,7 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
                 <Label htmlFor='fullBanNook'>فول بین نوکدار</Label>
               </div>
             </RadioGroup>
+            {errors.collarType && <p className='text-red-500 text-sm'>{errors.collarType}</p>}
           </div>
 
           <div className='border-r'>
@@ -253,6 +325,7 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
                 <Label htmlFor='sadaPati'>سادہ پٹی بیک صاف</Label>
               </div>
             </RadioGroup>
+            {errors.patiType && <p className='text-red-500 text-sm'>{errors.patiType}</p>}
 
             <div className='border-b w-[90%] my-4'></div>
 
@@ -266,6 +339,7 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
                 <Label htmlFor='patiSawa1inch'>پٹی سوا ایک انچ </Label>
               </div>
             </RadioGroup>
+            {errors.patiWidth && <p className='text-red-500 text-sm'>{errors.patiWidth}</p>}
           </div>
 
           <div className='border-r'>
@@ -277,10 +351,12 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
               />
               <Label htmlFor='pocket'>سامنے پاکٹ</Label>
             </div>
+            {errors.pocket && <p className='text-red-500 text-sm'>{errors.pocket}</p>}
 
             <div className='border-b w-[90%] my-2'></div>
 
-            <RadioGroup value={formData.pocketType} onValueChange={value => handleRadioChange('pocketType', value)}>
+            {/* Radio Group section for pocket type - make it independent */}
+            <RadioGroup value={formData.pocketType} onValueChange={val => handleRadioChange('pocketType', val)}>
               <div className='flex items-center space-x-2'>
                 <RadioGroupItem value='sidePocket' id='sidePocket' />
                 <Label htmlFor='sidePocket'>سائیڈ پاکٹ</Label>
@@ -373,21 +449,21 @@ function RecordForm({ open, onClose, onPrint, onSubmit, initialData = {}, purpos
         <div className='flex items-center gap-2 mt-2'>
           <Button
             onClick={() => onClose?.()}
-            className='w-1/3 h-12 rounded-sm cursor-pointer bg-red-500 hover:bg-red-500'
+            className='w-1/2 h-12 rounded-sm cursor-pointer bg-red-500 hover:bg-red-500'
           >
             <X className='' size={20} />
             Cancel
           </Button>
-          <Button
+          {/* <Button
             onClick={handlePrintForm}
             className='w-1/3 h-12 rounded-sm cursor-pointer bg-green-500 hover:bg-green-500'
           >
             <PrinterCheckIcon className='' size={20} />
             Print & Save
-          </Button>
+          </Button> */}
           <Button
             onClick={handleSubmitForm}
-            className='w-1/3 h-12 rounded-sm cursor-pointer bg-[#003049] hover:bg-[#003049]'
+            className='w-1/2 h-12 rounded-sm cursor-pointer bg-[#003049] hover:bg-[#003049]'
           >
             <Save className='' size={20} />
             Save
