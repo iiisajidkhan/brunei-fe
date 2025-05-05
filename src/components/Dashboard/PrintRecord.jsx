@@ -9,6 +9,8 @@ import kanchi from '@/assets/svg/kanchi.svg';
 function PrintRecord({ open, onClose, data }) {
   const printRef = useRef();
 
+  console.log('PrintRecord data:', data);
+
   useEffect(() => {
     document.body.classList.add('overflow-hidden');
     return () => {
@@ -202,22 +204,15 @@ function PrintRecord({ open, onClose, data }) {
                 )}
               </div>
 
-              {data.pocket && (
-                <div className='flex items-center gap-2 border-b py-2'>
-                  <Check className='' size={16} />
-                  <h1 className='text-[12px] font-semibold'>سامنے پاکٹ</h1>
-                </div>
-              )}
-
               <div className='w-full flex items-center gap-2 border-b py-2'>
                 {data.pocket && (
-                  <div className='flex items-center gap-2 '>
+                  <div className='flex items-center gap-2'>
                     <Check className='' size={16} />
                     <h1 className='text-[12px] font-semibold'>سامنے پاکٹ</h1>
                   </div>
                 )}
-                {data.pocketType && data.pocket && (
-                  <div className='flex items-center gap-2 '>
+                {data.pocketType && (
+                  <div className='flex items-center gap-2 ml-2'>
                     <Check className='' size={16} />
                     <h1 className='text-[12px] font-semibold'>
                       {data.pocketType === 'sidePocket' && 'سائیڈ پاکٹ'}
@@ -235,7 +230,7 @@ function PrintRecord({ open, onClose, data }) {
                   </div>
                 )}
                 {data.GotyKeyBaghair && (
-                  <div className='flex items-center gap-2 '>
+                  <div className='flex items-center gap-2 ml-2'>
                     <Check className='' size={16} />
                     <h1 className='text-[12px] font-semibold'>گوٹے کے بغیر</h1>
                   </div>
@@ -249,13 +244,13 @@ function PrintRecord({ open, onClose, data }) {
                   </div>
                 )}
                 {data.golAsteen && (
-                  <div className='flex items-center gap-2 '>
+                  <div className='flex items-center gap-2 ml-2'>
                     <Check className='' size={16} />
                     <h1 className='text-[12px] font-semibold'>گول استین</h1>
                   </div>
                 )}
                 {data.rangeenButton && (
-                  <div className='flex items-center gap-2 '>
+                  <div className='flex items-center gap-2 ml-2'>
                     <Check className='' size={16} />
                     <h1 className='text-[12px] font-semibold'>رینگ بٹن</h1>
                   </div>

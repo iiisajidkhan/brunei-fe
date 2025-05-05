@@ -56,7 +56,7 @@ const CustomActionBtn = React.memo(({ data, onEdit, onDelete, onPrint }) => {
 
 function CustomerTable({ setTotalNumberOfCustomers, reFetch, setReFetch, onPrintRequest }) {
   const [customerData, setCustomerData] = useState([]);
-  const [limits, setLimits] = useState(8);
+  const [limits, setLimits] = useState(7);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(0);

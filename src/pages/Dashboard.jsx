@@ -24,7 +24,7 @@ function Dashboard() {
         showToast('Customer added successfully', 'success');
         setReFetch(true);
         setOpenAddRecord(false);
-        
+
         if (shouldPrint) {
           setPrintData(data);
           setOpenPrintRecord(true);
@@ -35,11 +35,11 @@ function Dashboard() {
     }
   };
 
-  const handlePrintRequest = (data) => {
+  const handlePrintRequest = data => {
     setPrintData(data);
     setOpenPrintRecord(true);
   };
-  
+
   return (
     <>
       <div className='w-full flex items-center justify-between gap-2'>
@@ -59,17 +59,13 @@ function Dashboard() {
       <RecordForm
         open={openAddRecord}
         onClose={() => setOpenAddRecord(false)}
-        onPrint={(data) => {
+        onPrint={data => {
           handleSubmit(data, true);
         }}
-        onSubmit={(data) => handleSubmit(data, false)}
+        onSubmit={data => handleSubmit(data, false)}
       />
-      
-      <PrintRecord 
-        open={openPrintRecord} 
-        onClose={() => setOpenPrintRecord(false)} 
-        data={printData}
-      />
+
+      <PrintRecord open={openPrintRecord} onClose={() => setOpenPrintRecord(false)} data={printData} />
     </>
   );
 }
