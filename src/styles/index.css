@@ -153,17 +153,28 @@
     padding: 0 !important;
     margin: 0 auto !important;
     transform: scale(1) !important;
-    font-size: 14pt !important;
   }
 
+  /* Specifically target Address and Phone Number */
+  .address, .phone-number {
+    font-size: 14pt !important;
+    font-weight: bold;
+  }
+
+  /* General text elements */
   p, span, div {
     font-size: 14pt !important; /* Ensuring all nested elements have the same size */
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-size: 16pt !important; /* Slightly larger for headings */
   }
 
   .no-print {
     display: none !important;
   }
 }
+
 
 /* @media print {
   body {
