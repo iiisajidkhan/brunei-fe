@@ -36,7 +36,7 @@ function PrintRecord({ open, onClose, data }) {
       <div onClick={e => e.stopPropagation()} className='relative  w-[556px] overflow-y-auto bg-white p-8 rounded'>
         <div ref={printRef}>
           <div className='flex items-center justify-center w-full'>
-            <h1 className='font-semibold text-[32px]'>BRUNEI TAILOR & CLOTH HOUSE</h1>
+            <h2 className='font-semibold text-[32px]'>BRUNEI TAILOR & CLOTH HOUSE</h2>
           </div>
           <div className='flex items-center justify-between w-full border-b'>
             <div className='text-[10px] flex items-center font-semibold'>0336-9197612, 0316-1229990</div>
@@ -75,7 +75,7 @@ function PrintRecord({ open, onClose, data }) {
           </div>
 
           <div className='flex items-center justify-center w-full'>
-            <h1 className='font-semibold text-[32px]'>BRUNEI TAILOR & CLOTH HOUSE</h1>
+            <h2 className='font-semibold text-[32px]'>BRUNEI TAILOR & CLOTH HOUSE</h2>
           </div>
           <div className='flex items-center justify-between w-full border-b'>
             <div className='text-[10px] flex items-center font-semibold'>0336-9197612, 0316-1229990</div>
