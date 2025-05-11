@@ -163,17 +163,22 @@
 
   /* General text elements */
   p, span, div {
-    font-size: 14pt !important; /* Ensuring all nested elements have the same size */
+    font-size: 14pt !important;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-size: 16pt !important; /* Slightly larger for headings */
+  /* Headings */
+  h1 {
+    font-size: 20px !important; /* Set h1 to 20px */
+  }
+  h2, h3, h4, h5, h6 {
+    font-size: 16pt !important;
   }
 
   .no-print {
     display: none !important;
   }
 }
+
 
 
 /* @media print {
