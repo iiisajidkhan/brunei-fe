@@ -143,6 +143,32 @@
   body {
     width: 210mm !important;
     min-height: 297mm !important;
+    font-size: 14pt !important; /* Set to 14pt for normal visibility */
+    line-height: 1.5 !important;
+  }
+
+  .print-container {
+    width: 190mm !important;
+    min-height: 277mm !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    transform: scale(1) !important;
+    font-size: 14pt !important;
+  }
+
+  p, span, div {
+    font-size: 14pt !important; /* Ensuring all nested elements have the same size */
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* @media print {
+  body {
+    width: 210mm !important;
+    min-height: 297mm !important;
   }
 
   .print-container {
@@ -156,4 +182,4 @@
   .no-print {
     display: none !important;
   }
-}
+} */
