@@ -1,10 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+
 import { Button } from '@/components/ui/button';
 import { Check, PrinterIcon, X } from 'lucide-react';
+
 import kanchi from '@/assets/svg/kanchi.svg';
 
 function PrintRecord({ open, onClose, data }) {
   const printRef = useRef();
+
+  console.log('PrintRecord data:', data);
 
   useEffect(() => {
     document.body.classList.add('overflow-hidden');
@@ -25,29 +29,11 @@ function PrintRecord({ open, onClose, data }) {
 
   if (!open || !data) return null;
 
-  // Filter kaf fields: show only those with a value
-  const kafFields = [
-    { label: 'Length / لمبائی', value: data.length },
-    { label: 'Arm / بازو', value: data.arm },
-    { label: 'Shoulder / تیرہ', value: data.shoulder },
-    { label: 'Neck / گلہ', value: data.neck },
-    { label: 'Chest / چھاتی', value: data.chest },
-    { label: 'Width / گیرہ / چوڑائی', value: data.width },
-    { label: 'Pant / شلوار', value: data.pant },
-    { label: 'Pancha / پانچہ', value: data.pancha },
-  ];
-
-  // Option: show all kaf fields even if empty (show '-')
-  // const kafToRender = kafFields;
-  // Or filter out empty ones
-  const kafToRender = kafFields.filter(f => f.value !== undefined && f.value !== null && f.value !== '');
-
   return (
     <div onClick={() => onClose?.()} className="fixed inset-0 flex items-center justify-center overflow-hidden z-50">
       <div className="absolute inset-0 bg-black/30"></div>
       <div onClick={e => e.stopPropagation()} className="relative w-[556px] overflow-y-auto bg-white p-8 rounded">
         <div ref={printRef}>
-          {/* Header */}
           <div className="flex items-center justify-center w-full">
             <h2 className="font-semibold text-[32px]">BRUNEI TAILOR & CLOTH HOUSE</h2>
           </div>
@@ -57,8 +43,6 @@ function PrintRecord({ open, onClose, data }) {
               Address: <span className="font-normal">Lakki Gate Bilal Market Near Jafar Masjid Bannu</span>
             </h1>
           </div>
-
-          {/* Customer info */}
           <div className="grid grid-cols-2 gap-4 py-4 ">
             <div className="flex items-center gap-2">
               <h1 className="text-[12px] font-semibold">Name / نام</h1>
@@ -77,8 +61,6 @@ function PrintRecord({ open, onClose, data }) {
               <h1 className="text-[12px]">{data.address || '-'}</h1>
             </div>
           </div>
-
-          {/* Placeholder lines */}
           <div className="flex items-center justify-between gap-2">
             <h1 className="text-[12px] font-semibold">_________ سوٹ</h1>
             <h1 className="text-[12px] font-semibold">_________ بقایا رقم</h1>
@@ -86,14 +68,14 @@ function PrintRecord({ open, onClose, data }) {
             <h1 className="text-[12px] font-semibold">_________ کل رقم</h1>
           </div>
 
-          {/* Divider */}
           <div className="flex items-center mt-4">
             <img src={kanchi} alt="kanchi" className="w-[20px] h-[20px]" />
-            <h1 className="text-gray-300">---------------------------------------------------------------</h1>
+            <h1 className="text-gray-300">
+              ---------------------------------------------------------------
+            </h1>
           </div>
 
-          {/* Repeat header and info (like a receipt copy) */}
-          <div className="flex items-center justify-center w-full mt-6">
+          <div className="flex items-center justify-center w-full">
             <h2 className="font-semibold text-[32px]">BRUNEI TAILOR & CLOTH HOUSE</h2>
           </div>
           <div className="flex items-center justify-between w-full border-b">
@@ -122,6 +104,8 @@ function PrintRecord({ open, onClose, data }) {
             </div>
           </div>
 
+          <div className="border-b border-black my-2"></div>
+
           <div className="flex items-center justify-between gap-2">
             <h1 className="text-[12px] font-semibold">_________ سوٹ</h1>
             <h1 className="text-[12px] font-semibold">_________ بقایا رقم</h1>
@@ -131,24 +115,28 @@ function PrintRecord({ open, onClose, data }) {
 
           <div className="border-b border-black my-2"></div>
 
-          {/* Kaf fields container */}
           <div className="w-full flex border border-black rounded overflow-hidden">
             <div className="w-1/2 border-r border-black">
-              {kafToRender.length === 0 ? (
-                <div className="px-4 py-2 text-[12px]">No measurements provided.</div>
-              ) : (
-                kafToRender.map(({ label, value }, idx, arr) => (
-                  <div
-                    key={label}
-                    className={`flex justify-between items-center px-4 py-2 text-[12px] border-b border-black ${
-                      idx === arr.length - 1 ? 'border-b-0' : ''
-                    }`}
-                  >
-                    <span className="font-semibold">{label} :</span>
-                    <span>{value}</span>
-                  </div>
-                ))
-              )}
+              {[
+                { label: 'Length / لمبائی', value: data.length },
+                { label: 'Arm / بازو', value: data.arm },
+                { label: 'Shoulder / تیرہ', value: data.shoulder },
+                { label: 'Neck / گلہ', value: data.neck },
+                { label: 'Chest / چھاتی', value: data.chest },
+                { label: 'Width / گیرہ / چوڑائی', value: data.width },
+                { label: 'Pant / شلوار', value: data.pant },
+                { label: 'Pancha / پانچہ', value: data.pancha },
+              ].map(({ label, value }, idx, arr) => (
+                <div
+                  key={label}
+                  className={`flex justify-between items-center px-4 py-2 text-[12px] border-b border-black ${
+                    idx === arr.length - 1 ? 'border-b-0' : ''
+                  }`}
+                >
+                  <span className="font-semibold">{label} :</span>
+                  <span>{value || '-'}</span>
+                </div>
+              ))}
             </div>
 
             <div className="w-1/2">
@@ -178,22 +166,19 @@ function PrintRecord({ open, onClose, data }) {
           </div>
         </div>
 
-        {/* Buttons */}
         <div className="flex gap-2 w-full mt-2">
           <Button
             onClick={() => onClose?.()}
-            variant="destructive"
-            className="flex gap-2 items-center"
+            className="w-1/2 h-12 rounded-sm cursor-pointer bg-red-500 hover:bg-red-500"
           >
-            <X size={18} />
+            <X size={20} />
             Close
           </Button>
           <Button
             onClick={handlePrint}
-            variant="default"
-            className="flex gap-2 items-center"
+            className="w-1/2 h-12 rounded-sm cursor-pointer bg-green-600 hover:bg-green-700"
           >
-            <PrinterIcon size={18} />
+            <PrinterIcon size={20} />
             Print
           </Button>
         </div>
@@ -202,122 +187,9 @@ function PrintRecord({ open, onClose, data }) {
   );
 }
 
-function App() {
-  const [formData, setFormData] = useState({
-    name: '',
-    registerNumber: '',
-    phoneNumber: '',
-    address: '',
-    length: '',
-    arm: '',
-    shoulder: '',
-    neck: '',
-    chest: '',
-    width: '',
-    pant: '',
-    pancha: '',
-  });
+export default PrintRecord;
 
-  const [printOpen, setPrintOpen] = useState(false);
 
-  // Simple validation: kaf fields are optional
-  // But we require name and phoneNumber for example
-  const validate = () => {
-    if (!formData.name.trim()) {
-      alert('Name is required');
-      return false;
-    }
-    if (!formData.phoneNumber.trim()) {
-      alert('Phone number is required');
-      return false;
-    }
-    return true;
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      setPrintOpen(true);
-    }
-  };
-
-  return (
-    <div className="p-4 max-w-xl mx-auto">
-      <h1 className="text-xl font-bold mb-4">Tailor Record Form</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          name="name"
-          placeholder="Name / نام"
-          value={formData.name}
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
-        <input
-          name="registerNumber"
-          placeholder="Number / نمبر"
-          value={formData.registerNumber}
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
-        <input
-          name="phoneNumber"
-          placeholder="Phone / موبائل نمبر"
-          value={formData.phoneNumber}
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
-        <input
-          name="address"
-          placeholder="Address / پتہ"
-          value={formData.address}
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
-
-        <h2 className="font-semibold mt-6">Measurements (Kaf) - Optional</h2>
-        {[
-          { label: 'Length / لمبائی', name: 'length' },
-          { label: 'Arm / بازو', name: 'arm' },
-          { label: 'Shoulder / تیرہ', name: 'shoulder' },
-          { label: 'Neck / گلہ', name: 'neck' },
-          { label: 'Chest / چھاتی', name: 'chest' },
-          { label: 'Width / گیرہ / چوڑائی', name: 'width' },
-          { label: 'Pant / شلوار', name: 'pant' },
-          { label: 'Pancha / پانچہ', name: 'pancha' },
-        ].map(({ label, name }) => (
-          <input
-            key={name}
-            name={name}
-            placeholder={label}
-            value={formData[name]}
-            onChange={handleChange}
-            className="border p-2 w-full"
-          />
-        ))}
-
-        <button
-          type="submit"
-          className="bg-blue-600 text-white py-2 px-4 rounded"
-        >
-          Preview & Print
-        </button>
-      </form>
-
-      <PrintRecord
-        open={printOpen}
-        onClose={() => setPrintOpen(false)}
-        data={formData}
-      />
-    </div>
-  );
-}
-
-export default App;
 
 
 
