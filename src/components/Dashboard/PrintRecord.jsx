@@ -138,7 +138,7 @@ function PrintRecord({ open, onClose, data }) {
               ))}
             </div>
 
-            <div className="w-1/2 font-mono">
+            <div className="w-1/2 font-mono border-l border-black">
   {[
     { label: 'Length / لمبائی', value: data.length },
     { label: 'Arm / بازو', value: data.arm },
@@ -151,11 +151,14 @@ function PrintRecord({ open, onClose, data }) {
   ].map(({ label, value }, idx, arr) => (
     <div
       key={label}
-      className={`px-4 py-2 text-[12px] border-b border-black whitespace-pre ${
+      className={`px-4 py-2 text-[12px] border-b border-black ${
         idx === arr.length - 1 ? 'border-b-0' : ''
       }`}
     >
-      {`${String(value || '-').padStart(4, ' ')} :  ${label}`}
+      <span className="inline-block w-[60px] text-right mr-2">
+        {String(value || '-').padStart(4, ' ')}
+      </span>
+      : {label}
     </div>
   ))}
 </div>
