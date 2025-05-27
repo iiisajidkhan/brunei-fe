@@ -104,7 +104,7 @@ function PrintRecord({ open, onClose, data }) {
             </div>
           </div>
 
-          <div className="border-b border-black my-2"></div>
+         
 
           <div className="flex items-center justify-between gap-2">
             <h1 className="text-[12px] font-semibold">_________ سوٹ</h1>
