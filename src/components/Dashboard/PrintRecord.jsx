@@ -139,27 +139,28 @@ function PrintRecord({ open, onClose, data }) {
             </div>
 
             <div className="w-1/2">
-              {[
-                { label: 'Length / لمبائی', value: data.length },
-                { label: 'Arm / بازو', value: data.arm },
-                { label: 'Shoulder / تیرہ', value: data.shoulder },
-                { label: 'Neck / گلہ', value: data.neck },
-                { label: 'Chest / چھاتی', value: data.chest },
-                { label: 'Width / گیرہ / چوڑائی', value: data.width },
-                { label: 'Pant / شلوار', value: data.pant },
-                { label: 'Pancha / پانچہ', value: data.pancha },
-              ].map(({ label, value }, idx, arr) => (
-                <div
-                  key={label}
-                  className={`flex justify-between items-center px-4 py-2 text-[12px] border-b border-black ${
-                    idx === arr.length - 1 ? 'border-b-0' : ''
-                  }`}
-                >
-                  <span className="font-semibold">{label} :</span>
-                  <span>{value || '-'}</span>
-                </div>
-              ))}
-            </div>
+  {[
+    { label: 'Length / لمبائی', value: data.length },
+    { label: 'Arm / بازو', value: data.arm },
+    { label: 'Shoulder / تیرہ', value: data.shoulder },
+    { label: 'Neck / گلہ', value: data.neck },
+    { label: 'Chest / چھاتی', value: data.chest },
+    { label: 'Width / گیرہ / چوڑائی', value: data.width },
+    { label: 'Pant / شلوار', value: data.pant },
+    { label: 'Pancha / پانچہ', value: data.pancha },
+  ].map(({ label, value }, idx, arr) => (
+    <div
+      key={label}
+      className={`flex justify-between items-center px-4 py-2 text-[12px] border-b border-black ${
+        idx === arr.length - 1 ? 'border-b-0' : ''
+      }`}
+    >
+      <span>{value || '-'}</span>
+      <span> : {label}</span>
+    </div>
+  ))}
+</div>
+
           </div>
         </div>
 
