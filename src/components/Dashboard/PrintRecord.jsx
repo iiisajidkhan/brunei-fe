@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
+
 import { Button } from '@/components/ui/button';
 import { Check, PrinterIcon, X } from 'lucide-react';
+
 import kanchi from '@/assets/svg/kanchi.svg';
 
 function PrintRecord({ open, onClose, data }) {
@@ -41,7 +43,7 @@ function PrintRecord({ open, onClose, data }) {
               Address: <span className="font-normal">Lakki Gate Bilal Market Near Jafar Masjid Bannu</span>
             </h1>
           </div>
-          <div className="grid grid-cols-2 gap-4 py-4">
+          <div className="grid grid-cols-2 gap-4 py-4 ">
             <div className="flex items-center gap-2">
               <h1 className="text-[12px] font-semibold">Name / نام</h1>
               <h1 className="text-[12px]">{data.name || '-'}</h1>
@@ -51,7 +53,7 @@ function PrintRecord({ open, onClose, data }) {
               <h1 className="text-[12px]">{data.registerNumber || '-'}</h1>
             </div>
             <div className="flex items-center gap-2">
-              <h1 className="text-[12px] font-semibold">Phone / موبائل نمبر</h1>
+              <h1 className="text-[12px] font-semibold">Phone /موبائل نمبر</h1>
               <h1 className="text-[12px]">{data.phoneNumber || '-'}</h1>
             </div>
             <div className="flex items-center gap-2">
@@ -102,6 +104,8 @@ function PrintRecord({ open, onClose, data }) {
             </div>
           </div>
 
+          <div className="border-b border-black my-2"></div>
+
           <div className="flex items-center justify-between gap-2">
             <h1 className="text-[12px] font-semibold">_________ سوٹ</h1>
             <h1 className="text-[12px] font-semibold">_________ بقایا رقم</h1>
@@ -109,15 +113,33 @@ function PrintRecord({ open, onClose, data }) {
             <h1 className="text-[12px] font-semibold">_________ کل رقم</h1>
           </div>
 
-          <div className="w-full flex mt-2">
-            {/* Left side empty or reserved for future content */}
-            <div className="w-1/2"></div>
-            {/* Right side: Features and Measurements in a single column */}
-            <div className="w-1/2 border border-black rounded overflow-hidden">
-              {/* Features Section */}
-              <div className="border-b border-black bg-gray-100">
-                <h3 className="text-[12px] font-semibold px-4 py-2">Features / خصوصیات</h3>
-              </div>
+          <div className="border-b border-black my-2"></div>
+
+          <div className="w-full flex border border-black rounded overflow-hidden">
+            <div className="w-1/2 border-r border-black">
+              {[
+                { label: 'Length / لمبائی', value: data.length },
+                { label: 'Arm / بازو', value: data.arm },
+                { label: 'Shoulder / تیرہ', value: data.shoulder },
+                { label: 'Neck / گلہ', value: data.neck },
+                { label: 'Chest / چھاتی', value: data.chest },
+                { label: 'Width / گیرہ / چوڑائی', value: data.width },
+                { label: 'Pant / شلوار', value: data.pant },
+                { label: 'Pancha / پانچہ', value: data.pancha },
+              ].map(({ label, value }, idx, arr) => (
+                <div
+                  key={label}
+                  className={`flex justify-between items-center px-4 py-2 text-[12px] border-b border-black ${
+                    idx === arr.length - 1 ? 'border-b-0' : ''
+                  }`}
+                >
+                  <span className="font-semibold">{label} :</span>
+                  <span>{value || '-'}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="w-1/2">
               {[
                 'ٹو پیس کلر',
                 'اوپر پٹی',
@@ -138,32 +160,6 @@ function PrintRecord({ open, onClose, data }) {
                 >
                   <Check size={16} className="text-green-600" />
                   <span>{feature}</span>
-                </div>
-              ))}
-              {/* Measurements Section */}
-              <div className="border-t border-black bg-gray-100">
-                <h3 className="text-[12px] font-semibold px-4 py-2">Measurements / پیمائش</h3>
-              </div>
-              {[
-                { label: 'Length / لمبائی', value: data.length },
-                { label: 'Arm / بازو', value: data.arm },
-                { label: 'Shoulder / تیرہ', value: data.shoulder },
-                { label: 'Neck / گلہ', value: data.neck },
-                { label: 'Chest / چھاتی', value: data.chest },
-                { label: 'Width / گیرہ / چوڑائی', value: data.width },
-                { label: 'Pant / شلوار', value: data.pant },
-                { label: 'Pancha / پانچہ', value: data.pancha },
-              ].map(({ label, value }, idx, arr) => (
-                <div
-                  key={label}
-                  className={`flex items-center px-4 py-2 text-[12px] font-mono border-b border-black ${
-                    idx === arr.length - 1 ? 'border-b-0' : ''
-                  }`}
-                >
-                  <span className="inline-block w-[60px] text-right mr-2">
-                    {String(value || '-').padStart(4, ' ')}
-                  </span>
-                  : {label}
                 </div>
               ))}
             </div>
@@ -192,6 +188,7 @@ function PrintRecord({ open, onClose, data }) {
 }
 
 export default PrintRecord;
+
 
 
 
